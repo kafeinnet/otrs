@@ -1863,7 +1863,17 @@ sub _SearchParamsGet {
             =~ /^(StateType|StateTypeIDs|Queues|QueueIDs|Types|TypeIDs|States|StateIDs|Priorities|PriorityIDs|Services|ServiceIDs|SLAs|SLAIDs|Locks|LockIDs|OwnerIDs|ResponsibleIDs|WatchUserIDs|ArchiveFlags)$/
             )
         {
-            push @{ $TicketSearch{$Key} }, $Value;
+            if (
+                $Value
+                =~ /,/
+               )
+            {
+               push @{ $TicketSearch{$Key} }, split(/,/, $Value);
+            }
+            else
+            {
+               push @{ $TicketSearch{$Key} }, $Value;
+            }
         }
 
         # check if parameter is a dynamic field and capture dynamic field name (with DynamicField_)
